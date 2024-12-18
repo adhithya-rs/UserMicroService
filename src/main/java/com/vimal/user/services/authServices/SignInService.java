@@ -132,7 +132,7 @@ public class SignInService {
         if(verificationCodeRepository.existsByEmail(user.getEmail())){
             verificationCodeRepository.deleteByEmail(user.getEmail());
         }
-        String verificationCode = ""+(random.nextInt(900000) + 100000);
+        String verificationCode = "123456";//"""+(random.nextInt(900000) + 100000);
         if(email==null){
             phoneNumberValidationService.sendVerificationPhoneNumber(countryCode+phoneNumber,verificationCode);
 

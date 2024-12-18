@@ -100,7 +100,7 @@ public class SignUpService {
         System.out.println("After deleting existing verification code");
         String emailCode = ""+(random.nextInt(900000) + 100000);
         emailService.sendVerificationEmail(email,emailCode);
-        String phoneNumberCode=""+(random.nextInt(900000) + 100000);
+        String phoneNumberCode="123456"; //""+(random.nextInt(900000) + 100000);
         phoneNumberValidationService.sendVerificationPhoneNumber(countryCode+phoneNumber,phoneNumberCode);
         try{
             verificationCodeRepository.save(new VerificationCode(email,phoneNumberCode,emailCode));
