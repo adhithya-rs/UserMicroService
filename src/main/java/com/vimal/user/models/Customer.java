@@ -7,7 +7,6 @@ import lombok.*;
 @Setter
 @ToString
 @AllArgsConstructor
-@NoArgsConstructor
 @Entity
 public class Customer extends User {
 

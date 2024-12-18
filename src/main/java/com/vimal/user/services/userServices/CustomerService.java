@@ -22,7 +22,7 @@ public class CustomerService{
 
     public CustomerDTO getProfile(String jwtToken) {
         long userId = Long.parseLong(jwtService.getSubjectFromToken(jwtToken));
-        Customer customer = customerRepository.findByUserId(userId)
+        Customer customer = customerRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("Customer not found"));
         return new CustomerDTO(customer.getFirstName(),
                 customer.getLastName(),

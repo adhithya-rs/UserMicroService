@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface VerificationCodeRepository extends JpaRepository<VerificationCode, Long> {
-    boolean existsByPhoneNumber(String phoneNumber);
+
 
     boolean existsByEmail(String email);
 

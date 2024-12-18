@@ -18,6 +18,7 @@ public class RegisterJWT {
     private long id;
     @Column(unique = true,nullable = false)
     private String token;
+    @Column(unique = true,nullable = false)
     private String email;
 
     public RegisterJWT(String email, String token) {

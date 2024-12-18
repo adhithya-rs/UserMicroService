@@ -24,7 +24,7 @@ public class RetailerService{
 
     public RetailerDTO getProfile(String jwtToken) {
         long userId = Long.parseLong(jwtService.getSubjectFromToken(jwtToken));
-        Retailer retailer = retailerRepository.findByUserId(userId)
+        Retailer retailer = retailerRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("Retailer not found"));
         return new RetailerDTO(retailer.getFirstName(),
                 retailer.getLastName(),
