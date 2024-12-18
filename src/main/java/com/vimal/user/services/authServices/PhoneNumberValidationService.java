@@ -29,12 +29,15 @@ public class PhoneNumberValidationService {
     }
 
     public boolean sendVerificationPhoneNumber(String phoneNumber, String code) {
+        System.out.println("Checking twiloi acc");
         Twilio.init(twilioAccountSid, twilioAuthToken);
+        System.out.println("twilio account created");
         try {
-
-            if(isPhoneNumberValid(phoneNumber)){
+            System.out.println("Phone Number checking");
+            if(!isPhoneNumberValid(phoneNumber)){
                 throw new PhoneVerificationCodeException("Error sending verification code to Phone Number, retry again later");
             }
+            System.out.println("Phone Number is valid");
             Message message = Message.creator(
                     new PhoneNumber(phoneNumber),
                     new PhoneNumber(twilioPhoneNumber),

@@ -19,15 +19,13 @@ public class GlobalExceptionHandler  {
         ErrorDTO errorDTO = new ErrorDTO();
         errorDTO.setMessage(productNotFoundException.getMessage());
 
-        ResponseEntity<ErrorDTO> responseEntity = new ResponseEntity<>(errorDTO, HttpStatus.NOT_FOUND);
-        return responseEntity;
+        return new ResponseEntity<>(errorDTO, HttpStatus.NOT_FOUND);
     }
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorDTO> handleGenericException(Exception exception) {
         ErrorDTO errorDTO = new ErrorDTO("An unexpected error occurred.");
 
-        ResponseEntity<ErrorDTO> responseEntity = new ResponseEntity<>(errorDTO, HttpStatus.INTERNAL_SERVER_ERROR);
-        return responseEntity;
+        return new ResponseEntity<>(errorDTO, HttpStatus.INTERNAL_SERVER_ERROR);
     }
     @ExceptionHandler(UserSaveException.class)
     public ResponseEntity<ErrorDTO> handleUserSaveException(UserSaveException ex) {

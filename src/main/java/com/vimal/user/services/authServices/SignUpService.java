@@ -1,6 +1,9 @@
 package com.vimal.user.services.authServices;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import com.vimal.user.customEceptions.*;
 import com.vimal.user.dtos.ResponseDTO;
 import com.vimal.user.enums.UserStatus;
@@ -10,6 +13,7 @@ import com.vimal.user.repositories.RegisterJWTRepository;
 import com.vimal.user.repositories.UserRepository;
 import com.vimal.user.repositories.VerificationCodeRepository;
 import jakarta.servlet.http.Cookie;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -37,11 +41,13 @@ public class SignUpService {
     @Autowired
     private Random random;
 
-
+    @Transactional
     public ResponseDTO verifyUser(String email, String phoneNumber, String countryCode, UserType userType, boolean reset, HttpServletResponse response) {
+        System.out.println("verifyUser " +reset);
         if(reset && registerJWTRepository.existsByEmail(email)){
             registerJWTRepository.deleteByEmail(email);
         }
+        System.out.println("verifyUser 2");
         if(!emailService.isEmailValid(email)){
             throw new InvalidEmailException("Please enter a valid e-mail address");
         }
@@ -54,30 +60,44 @@ public class SignUpService {
         if(registerJWTRepository.existsByEmail(email)){
             return new ResponseDTO("Reset");
         }
+
         String token = jwtService.generateRegistrationToken(email, userType);
+        System.out.println("Token : "+token);
         try{
             registerJWTRepository.save(new RegisterJWT(email, token));
+            registerJWTRepository.flush();
+            System.out.println("verifyUser after save");
         }catch (DataIntegrityViolationException ex) {
             throw new SignUpAlreadyInProgressException("SignUp process already on-going");
         }catch (DataAccessException e) {
             throw new DataBaseAccessException("Failed to connect to database");
         }
+        System.out.println("verifyUser Creating cookie");
         Cookie jwtCookie = new Cookie("jwt_token", token);
         jwtCookie.setHttpOnly(true);
         jwtCookie.setPath("/signUp");
         response.addCookie(jwtCookie);
+        System.out.println("verifyUser after cookie created");
         return new ResponseDTO("e-mail and phone number verified in DB!!");
     }
 
 
     public ResponseDTO sendCode(String email, String phoneNumber, String countryCode, String jwtToken) {
         RegisterJWT registerJWT = registerJWTRepository.findByEmail(email).orElse(null);
+        System.out.println("In send code signup");
         if(registerJWT == null || !registerJWT.getToken().equals(jwtToken)){
             throw new UnauthorizedException("Unauthorized/ Sign up process is already on-going");
         }
+        System.out.println("After unauthorize check");
         if(verificationCodeRepository.existsByEmail(email)){
             verificationCodeRepository.deleteByEmail(email);
         }
+        List<Integer> l1 = new ArrayList<>();
+        Stream<Integer> s1 = l1.stream();
+        List<Integer> l2 = s1.filter((e) -> e%2==0).
+                map((e) -> e*2).
+                sorted((a,b) -> b-a).toList();
+        System.out.println("After deleting existing verification code");
         String emailCode = ""+(random.nextInt(900000) + 100000);
         emailService.sendVerificationEmail(email,emailCode);
         String phoneNumberCode=""+(random.nextInt(900000) + 100000);

@@ -14,7 +14,7 @@ import lombok.Setter;
 public class VerificationCode {
     @Id
     private long id;
-    @Column(nullable = false)
+    @Column(unique = true,nullable = false)
     private String email;
     @Column
     private String phoneNumberVerificationCode;

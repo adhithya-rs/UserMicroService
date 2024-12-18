@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/signIn")
 @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
-public class SignInControler {
+public class SignInController {
 
     @Autowired
     private SignInService signInService;
