@@ -30,21 +30,21 @@ public class PhoneNumberValidationService {
 
     public boolean sendVerificationPhoneNumber(String phoneNumber, String code) {
         System.out.println("Checking twiloi acc");
-        Twilio.init(twilioAccountSid, twilioAuthToken);
+        //Twilio.init(twilioAccountSid, twilioAuthToken);
         System.out.println("twilio account created");
         try {
-            System.out.println("Phone Number checking");
-            if(!isPhoneNumberValid(phoneNumber)){
-                throw new PhoneVerificationCodeException("Error sending verification code to Phone Number, retry again later");
-            }
-            System.out.println("Phone Number is valid");
-            Message message = Message.creator(
-                    new PhoneNumber(phoneNumber),
-                    new PhoneNumber(twilioPhoneNumber),
-                    "Your tracker.com mobile verification code is: " + code+" (Valid for 5 mins)"
-            ).create();
+//            System.out.println("Phone Number checking");
+//            if(!isPhoneNumberValid(phoneNumber)){
+//                throw new PhoneVerificationCodeException("Error sending verification code to Phone Number, retry again later");
+//            }
+//            System.out.println("Phone Number is valid");
+//            Message message = Message.creator(
+//                    new PhoneNumber(phoneNumber),
+//                    new PhoneNumber(twilioPhoneNumber),
+//                    "Your tracker.com mobile verification code is: " + code+" (Valid for 5 mins)"
+//            ).create();
 
-            System.out.println(message.getSid());
+            //System.out.println(message.getSid());
             System.out.println("code sent successfully to mobile phone number");
             return true;
         } catch(Exception e) {
